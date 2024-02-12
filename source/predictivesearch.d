@@ -20,7 +20,7 @@ if(is(ReturnType!((R r, T t, size_t index) => r[index] == t) : bool) &&
    is(ReturnType!((R r, T t) => r[0] > t) : bool) &&
    is(ReturnType!((R r) => r.length) : size_t) &&
    is(ReturnType!((T t1, T t2, T t3, size_t i1, size_t i2) =>
-      cast(size_t)(i2 + (t1 - t2).to!double / (t1 -t3).to!double * (i1 - i2))) : size_t))
+      cast(size_t)(i2 + (t1 - t2).to!double / (t1 - t3).to!double * (i1 - i2))) : size_t))
 {
    alias n_size_t = Nullable!size_t;
 
@@ -41,9 +41,8 @@ if(is(ReturnType!((R r, T t, size_t index) => r[index] == t) : bool) &&
    {
       size_t prediction = cast(size_t)
          (minIndex + (needle - min).to!double / (max - min).to!double * (maxIndex - minIndex));
-      auto actual = haystack[prediction];
-      if(actual == needle) return n_size_t(prediction);
-
+      // max and min should already have been tested at this point,
+      // if predition truncated down to one of them, simply move them in by one.
       if(prediction == minIndex)
       {
          minIndex++;
@@ -57,6 +56,8 @@ if(is(ReturnType!((R r, T t, size_t index) => r[index] == t) : bool) &&
          continue;
       }
 
+      auto actual = haystack[prediction];
+      if(actual == needle) return n_size_t(prediction);
       if(actual < needle)
       {
          min = actual;
@@ -66,7 +67,6 @@ if(is(ReturnType!((R r, T t, size_t index) => r[index] == t) : bool) &&
       max = actual;
       maxIndex = prediction;
    }
-   if(min == needle) return n_size_t(minIndex);
    return n_size_t.init;
 }
 
