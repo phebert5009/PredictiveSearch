@@ -4,6 +4,6 @@
 	],
 	"copyright": "Copyright © 2024, phebert5009",
 	"description": "A searching algorithm which may be faster than binary search",
-	"license": "mit",
+	"license": "MIT",
 	"name": "predictivesearch"
 }
