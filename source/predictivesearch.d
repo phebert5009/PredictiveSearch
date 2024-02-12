@@ -7,10 +7,15 @@
  */
 module predictivesearch;
 
-size_t Find(R)(R randomAccessRange, T Needle)
+size_t find(R)(R randomAccessRange, T Needle)
 if(is(typeof((R r, size_t index) {
         T t = r[index];
     })) && is(typeof((R r) => R[$ - 1]))) // random access ranges have different requirements
 {
    return 0; 
+}
+
+unittest
+{
+   assert(find([1,2,3,4], 1) == 0);
 }
