@@ -19,8 +19,8 @@ if(is(ReturnType!((R r, T t, size_t index) => r[index] == t) : bool) &&
    is(ReturnType!((R r, T t) => r[0] < t) : bool) &&
    is(ReturnType!((R r, T t) => r[0] > t) : bool) &&
    is(ReturnType!((R r) => r.length) : size_t) &&
-   is(ReturnType!((T t1, T t2, T t3, size_t i1, size_t i2) =>
-      cast(size_t)(i2 + (t1 - t2).to!double / (t1 - t3).to!double * (i1 - i2))) : size_t))
+   is(ReturnType!((R r, size_t i1, size_t i2) =>
+      cast(size_t)(i2 + (r[0] - r[1]).to!double / (r[2] - r[1]).to!double * (i1 - i2))) : size_t))
 {
    alias n_size_t = Nullable!size_t;
 
