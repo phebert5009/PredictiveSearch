@@ -25,12 +25,12 @@ if(is(ReturnType!((R r, T t, size_t index) => r[index] == t) : bool) &&
    alias n_size_t = Nullable!size_t;
 
    if(haystack.length == 0) return n_size_t.init;
-   auto min = haystack[0];
+   auto min = cast()haystack[0];
    size_t minIndex = 0;
    if(needle == min) return n_size_t(minIndex);
    if(min > needle) return n_size_t.init;
    
-   auto max = haystack[haystack.length - 1]; // using length rather than $ to make the interface less restrictive
+   auto max = cast()haystack[haystack.length - 1]; // using length rather than $ to make the interface less restrictive
 
    size_t maxIndex = haystack.length - 1;
 
@@ -103,4 +103,15 @@ unittest
    assert(!res.isNull);
    assert(res.get == 13);
    assert(find(array, 819).isNull);
+}
+
+/// this should work with @nogc, but array literals don't
+@nogc
+unittest
+{
+   auto data = "abcde";
+   auto res = data.find('d');
+   assert(!res.isNull);
+   assert(res.get == 3);
+   assert(data.find(' ').isNull); 
 }
