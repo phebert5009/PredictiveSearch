@@ -47,12 +47,14 @@ if(is(ReturnType!((R r, T t, size_t index) => r[index] == t) : bool) &&
       {
          minIndex++;
          min = haystack[minIndex];
+         if(min == needle) return n_size_t(minIndex);
          continue;
       }
       if(prediction == maxIndex) // should only happen if max < 0
       {
          maxIndex--;
          max = haystack[maxIndex];
+         if(max == needle) return n_size_t(maxIndex);
          continue;
       }
 
@@ -114,4 +116,21 @@ unittest
    assert(!res.isNull);
    assert(res.get == 3);
    assert(data.find(' ').isNull); 
+}
+
+unittest
+{
+   static immutable array = [1, 2, 16];
+   assert(!array.find(2).isNull);
+}
+
+/// This would be the worst case scenario, where this acts like a linear search with extra work
+unittest
+{
+   import std.range : iota;
+   import std.array : array;
+   enum n = 50;
+   auto data = iota(n-1).array ~ n*n;
+   auto res  = data.find(n-2);
+   assert(!res.isNull);
 }
